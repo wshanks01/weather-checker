@@ -1,0 +1,30 @@
+.home {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  padding: 32px 10%; }
+
+.search {
+  margin: 0 auto; }
+  .search__form {
+    width: 350px;
+    margin: 0 auto; }
+  .search__input {
+    width: 244px;
+    height: 30px;
+    margin-left: 13%;
+    font-size: 16px;
+    text-align: center;
+    margin-top: 10px; }
+
+.results {
+  display: flex;
+  flex-wrap: wrap; }
+  .results__container {
+    flex-basis: 25.3%;
+    border: 1px solid gray;
+    border-radius: 4px;
+    background: lightgray;
+    margin: 20px;
+    padding: 20px;
+    text-align: center; }
