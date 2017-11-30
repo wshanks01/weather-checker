@@ -38,7 +38,7 @@ class HomeContainer extends Component {
   fetchResults(search){
     if (!search) {
       this.setState({fetchError:undefined})
-      return 'Enter valid value to add item'
+      return 'Enter valid value to search for city'
     }
     this.setState({isLoading:true})
     fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.state.search},CA&units=metric&APPID=0bf8663d6eb57b9496082f891d847720`)
