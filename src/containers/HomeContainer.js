@@ -9,35 +9,53 @@ class HomeContainer extends Component {
 
 
     this.state = {
-      search:null,
+      search:'',
       results:null,
-      isLoading:false
+      isLoading:false,
+      valueError:false,
+      fetchError:undefined,
     }
 
     this.fetchResults = this.fetchResults.bind(this)
     this.handleChange = this.handleChange.bind(this)
-
+    this.handleError = this.handleError.bind(this)
   }
 
   handleChange(event) {
     this.setState({
-      [event.target.id]: event.target.value
+      search: event.target.value
     })
   }
 
-// Fetch weather results based on search state
-  fetchResults(event){
-    event.preventDefault()
-    this.setState({isLoading:true})
+  handleError(response) {
+    if (!response.ok) {
+      throw Error(response.status) 
+    }
+    return response
+  }
 
+// Fetch weather results based on search state
+  fetchResults(search){
+    if (!search) {
+      this.setState({fetchError:undefined})
+      return 'Enter valid value to add item'
+    }
+    this.setState({isLoading:true})
     fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.state.search},CA&units=metric&APPID=0bf8663d6eb57b9496082f891d847720`)
+    .then(this.handleError)
     .then(results => {
       return results.json()
     })
     .then(data => {
       this.setState({
         isLoading:false,
-        results:data
+        results:data,
+        fetchError:false,
+      })
+    })  
+    .catch(error =>{
+      this.setState({
+        fetchError:true,
       })
     })
   }
@@ -47,7 +65,9 @@ class HomeContainer extends Component {
       <div className="home">
         <WeatherSearch 
           search={this.state.search}
+          fetchError={this.state.fetchError}
           results={this.state.results}
+          valueError={this.state.valueError}
           fetchResults={this.fetchResults}
           handleChange={this.handleChange}
         />

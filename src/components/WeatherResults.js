@@ -22,7 +22,7 @@ class WeatherResults extends Component {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     const date = new Date(day.replace(/\s/, 'T'))
     let monthDate = ''
-    months.forEach(function(month,index) {
+    months.forEach((month,index) => {
       if (date.getMonth() === index) {
         monthDate = month;
       }
