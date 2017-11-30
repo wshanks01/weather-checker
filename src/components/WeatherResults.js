@@ -12,22 +12,26 @@ class WeatherResults extends Component {
 
 // Take datetime and convert time into a user friendly format
   prettifyTimeStamp(timeStamp) {
-    let amOrPm = timeStamp.substr(11, 2) > 12 ? 'PM' : 'AM';
-    let hour = amOrPm === 'PM' ? (timeStamp.substr(11, 2) - 12) : timeStamp.substr(11, 2);
+    const amOrPm = timeStamp.substr(11, 2) > 12 ? 'PM' : 'AM';
+    const hour = amOrPm === 'PM' ? (timeStamp.substr(11, 2) - 12) : timeStamp.substr(11, 2);
     return `${hour}:${timeStamp.substr(14, 2)} ${amOrPm}`;
   }
 
 // Take datetime and convert month number into corresponding month
-  convertMonth(day) {
+  convertMonth(day, time) {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    let date = new Date(day)
+    const date = new Date(day.replace(/\s/, 'T'))
     let monthDate = ''
     months.forEach(function(month,index) {
       if (date.getMonth() === index) {
         monthDate = month;
       }
     });
-    return `${monthDate} ${date.getDate()}, ${this.prettifyTimeStamp(day)}`;
+    if (time === true) {
+      return `${monthDate} ${date.getDate()}, ${this.prettifyTimeStamp(day)}`;
+    } else {
+      return `${monthDate} ${date.getDate()}`
+    }
   }
 
   averagePressure() {
@@ -44,7 +48,7 @@ class WeatherResults extends Component {
     return this.props.results.list.map((day,index) => {
       return (
         <div key={index} className="results__container">
-          <p className="results__date">{this.convertMonth(day.dt_txt)}</p>
+          <p className="results__date">{this.convertMonth(day.dt_txt, true)}</p>
           <div className="results__temp">
             {day.main.temp} C
           </div>
@@ -62,7 +66,7 @@ class WeatherResults extends Component {
     }
     return (
       <div className="results-main">
-        <h3>{this.props.results.city.name}</h3>
+        <h3>{this.props.results.city.name} - {this.convertMonth(this.props.results.list[0].dt_txt, false)}</h3>
         <p>Average Pressure for these 5 days: {this.averagePressure()} kPa</p>
         <div className="results">
          {this.renderResults()}
